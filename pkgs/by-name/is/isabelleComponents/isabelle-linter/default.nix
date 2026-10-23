@@ -17,10 +17,11 @@ let
       classpath "@out@/share/java/isabelle_linter_plugin.jar"
     '';
   };
+  version = "2025-2-v1.1.0";
 in
 stdenvNoCC.mkDerivation {
   pname = "isabelle-linter";
-  version = "2025-2-1.0.0";
+  version = version;
 
   outputs = [
     "out"
@@ -30,8 +31,8 @@ stdenvNoCC.mkDerivation {
   src = fetchFromGitHub {
     owner = "isabelle-prover";
     repo = "isabelle-linter";
-    tag = "Isabelle2025-2-v1.0.0";
-    hash = "sha256-V6Bnxyq/WI6U0sVBHA/vFOI0U3Vd5/GLCxbeWVitm8I=";
+    tag = "Isabelle${version}";
+    hash = "sha256-OfaISXdjLzg11fcOvikPEDlyWInp0xVwKtJSOiNXyZ0=";
   };
 
   nativeBuildInputs = [
@@ -63,6 +64,10 @@ stdenvNoCC.mkDerivation {
 
     runHook postInstall
   '';
+
+  passthru.tests = {
+    inherit (isabelle.tests) linter;
+  };
 
   meta = {
     description = "Linter component for Isabelle";
